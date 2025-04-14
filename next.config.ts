@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  reactStrictMode: true,
   distDir: 'out',
   eslint: {
     ignoreDuringBuilds: true,
