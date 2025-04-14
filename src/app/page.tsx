@@ -103,23 +103,21 @@ export default function Home() {
   };
 
   const shareOnInstagram = () => {
-    // Instagram doesn’t have a dedicated web share URL.
-    // We'll try the native share API and if it fails, alert the user.
-    if (navigator.share) {
+    if (typeof navigator.share === "function") {
       shareUsingNativeAPI();
     } else {
       alert("Instagram sharing is not supported on this device. Please copy your result and share manually.");
     }
   };
-
+  
   const shareOnSnapchat = () => {
-    // Snapchat also doesn’t provide a direct web share URL.
-    if (navigator.share) {
+    if (typeof navigator.share === "function") {
       shareUsingNativeAPI();
     } else {
       alert("Snapchat sharing is not supported on this device. Please copy your result and share manually.");
     }
   };
+  
 
 
 
