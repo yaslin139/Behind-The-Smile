@@ -62,7 +62,7 @@ The "reason" should descriptively explain how they align with the killer's trait
 
     // 6) Return the structured JSON to the client
     return NextResponse.json(killerPick);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error("Error in getKillerPick route:", err);
     return NextResponse.json({ error: "Failed to get killer pick" }, { status: 500 });
   }

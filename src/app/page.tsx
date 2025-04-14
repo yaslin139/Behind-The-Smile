@@ -9,7 +9,6 @@ interface Question {
 
 export default function Home() {
   const audioRef = useRef<HTMLAudioElement>(null);
-  const [isMuted, setIsMuted] = useState(false);
   const [viewState, setViewState] = useState<"start" | "quiz" | "end">("start");
   const [opacity, setOpacity] = useState(1);
   const transitionDuration = 1000;
@@ -39,9 +38,6 @@ export default function Home() {
       return null;
     }
   }
-  const customLoader = ({ src }: { src: string }) => {
-    return src;
-  };
 
   useEffect(() => {
     if (viewState === "end") {
@@ -375,14 +371,6 @@ export default function Home() {
     }, transitionDuration);
   };
 
-
-  const toggleMute = () => {
-    if (audioRef.current) {
-      audioRef.current.muted = !audioRef.current.muted;
-      setIsMuted(audioRef.current.muted);
-    }
-  };
-
   const renderQuizQuestion = () => {
     const current = questions[questionIndex];
     return (
@@ -511,7 +499,7 @@ export default function Home() {
             `}
         />
 
-<Image
+        <Image
           src="/bloodsplat.png"
           alt="Blood drip"
           width={500}
