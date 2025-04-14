@@ -23,4 +23,105 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  overflow: hidden;
+  height: 100%;
+}
+
+
+@font-face {
+  font-family: 'PWChalk';
+  src: url('/PWChalk.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Chalk-ySans';
+  src: url('/Chalk-ySans.otf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Chalkiez-Regular';
+  src: url('/Chalkiez-Regular.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+.chalk-text {
+  font-family: 'PWChalk', sans-serif;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  font-size: 6rem;
+}
+
+.chalk-subtext {
+  font-family: 'PWChalk', sans-serif;
+  font-weight: bold;
+  color: rgb(195, 0, 0);
+  font-size: 3rem;
+  align-self: center;
+  padding-bottom: 120px;
+}
+
+.question-text {
+  font-family: 'PWChalk', sans-serif;
+  font-weight: bold;
+  color: rgb(195, 0, 0);
+  font-size: 3rem;
+  align-self: center;
+  padding-bottom: 60px;
+}
+
+.killer-text {
+  font-family: 'PWChalk', sans-serif;
+  font-weight: bold;
+  color: rgb(195, 0, 0);
+  font-size: 4rem;
+  align-self: center;
+  padding-bottom: 20px;
+}
+
+.loading-text {
+  font-family: 'PWChalk', sans-serif;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  font-size: 1.6rem;
+  align-self: center;
+  padding-bottom: 10px;
+}
+
+.desc-text {
+  font-family: 'PWChalk', sans-serif;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  align-self: center;
+}
+
+.reason-text {
+  font-family: 'PWChalk', sans-serif;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  align-self: center;
+}
+
+.share-text {
+  font-family: 'PWChalk', sans-serif;
+  font-weight: bold;
+  color: rgb(255, 255, 255);
+  align-self: center;
+}
+
+.answer-text {
+  font-family: 'PWChalk', sans-serif;
+  font-weight: bold;
+  color: rgb(0, 0, 0);
+  font-size: 1.3rem;
+}
+
+.start-button {
+  font-family: 'PWChalk', sans-serif;
+  font-size: 2rem;
+
 }
