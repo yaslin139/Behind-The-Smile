@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import https from "https";
 
-export async function GET(request: NextRequest) {
+export async function GET(request: NextRequest): Promise<Response> {
   const { searchParams } = new URL(request.url);
   const rawUrl = searchParams.get("url"); // The image URL you want to proxy
 
@@ -10,18 +10,21 @@ export async function GET(request: NextRequest) {
     return new NextResponse("Missing 'url' parameter.", { status: 400 });
   }
 
-  // If you have to handle http as well as https, consider using `http` or node-fetch.
-  return new Promise((resolve, reject) => {
+  // Wrap in a Promise<Response> so the type is explicit
+  return new Promise<Response>((resolve, reject) => {
     https.get(rawUrl, (proxyRes) => {
       if (proxyRes.statusCode !== 200) {
         return resolve(
-          new NextResponse(`Failed to fetch image with status: ${proxyRes.statusCode}`, { status: proxyRes.statusCode })
+          new NextResponse(
+            `Failed to fetch image with status: ${proxyRes.statusCode}`, 
+            { status: proxyRes.statusCode }
+          )
         );
       }
-      // Grab content-type header from the remote image
+      // Get content-type header from the remote image
       const contentType = proxyRes.headers["content-type"] || "image/jpeg";
 
-      // Stream the data back
+      // Create a readable stream to pipe the data
       const responseStream = new ReadableStream({
         start(controller) {
           proxyRes.on("data", (chunk) => controller.enqueue(chunk));
