@@ -16,9 +16,10 @@ const openai = new OpenAI({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+    type AnswerItem = { question: string; answer: string };
     const { answers } = body;
 
-    const userAnswersText = answers.map(ans => `Question: ${ans.question}\nAnswer: ${ans.answer}`).join('\n\n');
+    const userAnswersText = answers.map((ans: AnswerItem) => `Question: ${ans.question}\nAnswer: ${ans.answer}`).join('\n\n');
 
     const completion = await openai.beta.chat.completions.parse({
       model: "gpt-4o",
