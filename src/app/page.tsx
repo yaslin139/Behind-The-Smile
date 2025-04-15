@@ -12,7 +12,7 @@ export default function Home() {
   const [viewState, setViewState] = useState<"start" | "quiz" | "end">("start");
   const [opacity, setOpacity] = useState(1);
   const transitionDuration = 1000;
-  const [answers, setAnswers] = useState<string[]>([]);
+  const [answers, setAnswers] = useState<{ question: string; answer: string }[]>([]);
   const [killerResult, setKillerResult] = useState<{
     name: string;
     description: string;
@@ -344,6 +344,7 @@ export default function Home() {
   };
 
   const handleAnswerClick = (answer: string) => {
+    const currentQuestion = questions[questionIndex].question;
     // Play the paper sound effect on click
     const paperSound = new Audio("/paper.mp3");
     paperSound.play().catch((error) =>
@@ -351,7 +352,8 @@ export default function Home() {
     );
 
     console.log("SELECTED ANSWER:", answer);
-    setAnswers((prev) => [...prev, answer]);
+    setAnswers((prev) => [...prev, { question: currentQuestion, answer }]);
+
 
     // Fade out current question
     setOpacity(0);

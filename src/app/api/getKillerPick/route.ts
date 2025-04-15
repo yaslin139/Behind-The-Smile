@@ -9,8 +9,6 @@ const KillerPick = z.object({
   reason: z.string(),
 });
 
-// 2) Initialize OpenAI with your key from .env
-//    (Set OPENAI_API_KEY in your .env file)
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -18,96 +16,71 @@ const openai = new OpenAI({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-
-    // The user's answers (string[]) and maybe the question texts if needed
     const { answers } = body;
 
-    // 3) Build your prompt or system instructions
-    // We’ll feed in the user answers as context. You can shape this however you want.
-    // IMPORTANT: With zodResponseFormat, the model must return valid JSON that matches the KillerPick schema.
+    const userAnswersText = answers.map(ans => `Question: ${ans.question}\nAnswer: ${ans.answer}`).join('\n\n');
+
     const completion = await openai.beta.chat.completions.parse({
-      model: "gpt-4o", // or whichever model you want
+      model: "gpt-4o",
       messages: [
         {
           role: "system",
           content: `
 You are a world-renowned psychologist with deep knowledge of both fictional and real serial killers. 
-Given a set of user quiz answers, you will identify which serial killer (fictional or real) 
-the user most resembles, and return only valid JSON (no extra text) that matches this schema:
+Given a set of user quiz answers, identify which serial killer (fictional or real) the user most resembles, 
+and return only valid JSON (no extra text) matching this schema:
 
-Zod schema for the final structured killer pick
 {
   "name": string, 
   "description": string, 
   "reason": string
 }
 
-Consider ALL answers the user provides, to find a best match with a serial killer based on personality.
+Consider ALL answers to find the best match based on personality, quirks, and attributes. Be sensitive to 
+even the smallest mismatches—aim for the perfect fit, including niche or lesser-known killers. Ask yourself: 
+which serial killer would give these exact answers?
 
-The "description" should be a summary of the killer's background, methods, and notable traits.
-The "reason" should descriptively explain how they align with the killer's traits in second person, without directly referencing answers.
-        `,
+The "description" should summarize the killer’s background, methods, and notable traits.
+The "reason" should explain how they align with the killer’s traits in second person, without directly 
+referencing the answers.
+
+Consider all killers from the list below, including lesser-known ones, and decide which is most aligned to the answers.
+
+Here’s the list of killers to consider:
+- Real: Ted Bundy, Jeffrey Dahmer, Richard Ramirez, John Wayne Gacy, Ed Gein, Jack the Ripper, 
+  The Zodiac Killer, Gary Ridgway, Aileen Wuornos, Albert Fish, David Berkowitz, Dennis Rader, 
+  Richard Chase, Pedro Alonso Lopez, Robert Pickton, Andréi Chikatilo, Edmund Kemper, Christopher Dorner, 
+  Gary Heidnik, Jack Unterweger
+- Fictional: Joe Goldberg, Michael Myers, Leatherface, Hannibal Lecter, John Kramer, Ghostface, 
+  Norman Bates, Chucky, Buffalo Bill, Freddy Krueger, Jason Voorhees, The Tooth Fairy, Anton Chigurh, 
+  Max Cady, The Creeper, John Doe, The Mayor, Tommy Jarvis
+
+Map answers to traits like:
+- Social behavior: Introverted killers (e.g., Jeffrey Dahmer, Norman Bates) prefer isolation; extroverted ones 
+  (e.g., Ted Bundy) thrive on charm or manipulation.
+- Emotional responses: Calmness (e.g., Hannibal Lecter, Dennis Rader) vs. impulsiveness (e.g., Richard Ramirez).
+- Motivations: Control (e.g., John Kramer) vs. chaos (e.g., The Zodiac Killer).
+
+Consider all killers from the examples, including lesser-known ones, and decide which is most aligned.
+
+Do not default to well-known killers like Hannibal Lecter, Ted Bundy, Joe Goldberg unless the answers strongly align. 
+Prioritize the best fit across all answers, ensuring a diverse and niche range of outcomes.
+          `,
         },
         {
           role: "user",
-          content: `The user's answers are: ${JSON.stringify(answers)}`,
+          content: `Here are the user's quiz answers:\n\n${userAnswersText}\n\nBased on these, determine the serial killer they most resemble.`,
         },
       ],
-      // 4) Use zodResponseFormat to enforce structured JSON
       response_format: zodResponseFormat(KillerPick, "killerPick"),
     });
 
-    // 5) Grab the parsed object from the response
     const killerPick = completion.choices[0].message.parsed;
+    console.log("Parsed killer pick:", killerPick);
 
-    // 6) Return the structured JSON to the client
     return NextResponse.json(killerPick);
   } catch (err: unknown) {
     console.error("Error in getKillerPick route:", err);
     return NextResponse.json({ error: "Failed to get killer pick" }, { status: 500 });
   }
 }
-
-// Real-Life Serial Killers (20)
-
-// Ted Bundy
-// Jeffrey Dahmer
-// Richard Ramirez (The Night Stalker)
-// John Wayne Gacy
-// Ed Gein
-// Jack the Ripper
-// The Zodiac Killer
-// Gary Ridgway (The Green River Killer)
-// Aileen Wuornos
-// Albert Fish
-// David Berkowitz (Son of Sam)
-// Dennis Rader (BTK Killer)
-// Richard Chase (The Vampire of Sacramento)
-// Pedro Alonso Lopez (The Monster of the Andes)
-// Robert Pickton
-// Andréi Chikatilo (The Butcher of Rostov)
-// Edmund Kemper
-// Christopher Dorner
-// Gary Heidnik
-// Jack Unterweger
-
-// Fictional Serial Killers (20)
-
-// Joe Goldberg (You)
-// Michael Myers (Halloween)
-// Leatherface (The Texas Chainsaw Massacre)
-// Hannibal Lecter (Silence of the Lambs)
-// John Kramer (Jigsaw)
-// Ghostface (Scream)
-// Norman Bates (Psycho)
-// Chucky (Child's Play)
-// Buffalo Bill (The Silence of the Lambs)
-// Freddy Krueger (A Nightmare on Elm Street)
-// Jason Voorhees (Friday the 13th)
-// The Tooth Fairy (Red Dragon)
-// Anton Chigurh (No Country for Old Men)
-// Max Cady (Cape Fear)
-// The Creeper (Jeepers Creepers)
-// John Doe (Se7en)
-// The Mayor (The Walking Dead)
-// Tommy Jarvis (Friday the 13th)
