@@ -21,7 +21,7 @@ export default function Home() {
   const [killerImageUrl, setKillerImageUrl] = useState<string | null>(null);
 
   // 1) Add a new function to fetch the killer pick from our API route:
-  async function fetchKillerPick(userAnswers: string[]) {
+  async function fetchKillerPick(userAnswers: { question: string; answer: string }[]) {
     try {
       const res = await fetch("/api/getKillerPick", {
         method: "POST",
