@@ -381,7 +381,7 @@ export default function Home() {
           width={300}
           height={200}
           className={`
-              absolute 
+              fixed 
               top-23
               right-30
               z-0 
@@ -396,7 +396,7 @@ export default function Home() {
           width={800}
           height={200}
           className={`
-              absolute 
+              fixed 
               top-70
               z-0 
               rotate-[-10deg] 
@@ -464,7 +464,7 @@ export default function Home() {
             width={100}
             height={100}
             className={`
-              absolute 
+              fixed 
               right-85 
               top-10 
               -translate-y-1/2 
@@ -490,7 +490,7 @@ export default function Home() {
           width={250}
           height={200}
           className={`
-              absolute 
+              fixed 
               right-20 
               bottom-10 
               rotate-[0deg] 
@@ -505,7 +505,7 @@ export default function Home() {
           width={500}
           height={200}
           className={`
-              absolute 
+              fixed 
               left-50 
               top-10 
               rotate-[0deg] 
@@ -560,10 +560,7 @@ export default function Home() {
         grid-rows-[20px_1fr_20px] 
         items-center 
         justify-items-center 
-        p-8 
-        pb-20 
         gap-16 
-        sm:p-20 
         font-[family-name:var(--font-geist-sans)]
       "
       style={{ backgroundImage: "url('/chalk.jpeg')" }}
@@ -581,7 +578,7 @@ export default function Home() {
             width={600}
             height={600}
             className={`
-              absolute 
+              fixed 
               right-250 
               top-170 
               -translate-y-1/2 
@@ -600,7 +597,7 @@ export default function Home() {
             width={220}
             height={220}
             className={`
-              absolute 
+              fixed 
               right-5 
               top-35 
               -translate-y-1/2 
@@ -619,7 +616,7 @@ export default function Home() {
             width={500}
             height={500}
             className={`
-              absolute 
+              fixed 
               left-250 
               top-150 
               -translate-y-1/2 
@@ -638,7 +635,7 @@ export default function Home() {
             width={100}
             height={100}
             className={`
-              absolute 
+              fixed 
               left-320 
               top-100 
               -translate-y-1/2 
@@ -657,7 +654,7 @@ export default function Home() {
             width={200}
             height={200}
             className={`
-              absolute 
+              fixed 
               left-20 
               top-40 
               -translate-y-1/2 
@@ -676,7 +673,7 @@ export default function Home() {
             width={500}
             height={500}
             className={`
-              absolute 
+              fixed 
               left-250 
               top-150 
               -translate-y-1/2 
