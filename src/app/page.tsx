@@ -552,7 +552,7 @@ export default function Home() {
       className="
         w-full 
         h-screen 
-        overflow-hidden 
+        overflow-y-auto
         bg-cover 
         bg-center 
         bg-no-repeat 
